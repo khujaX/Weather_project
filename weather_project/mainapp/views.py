@@ -14,11 +14,11 @@ def get_weather_data(request):
     city = "Nottingham"
     url = 'http://api.openweathermap.org/data/2.5/weather?q={},gb&APPID={}'
 
-    weather_info = requests.get(url.format(city, api_key)).json()
     weather_db = WeatherData.objects.all()
     for data in weather_db:
         WeatherData.objects.filter(id=data.id).delete()
 
+    weather_info = requests.get(url.format(city, api_key)).json()
     WeatherData.objects.create(city=weather_info['name'], temperature=weather_info['main']['temp'], pressure=weather_info['main']['pressure'], description=weather_info['weather'][0]['description'])
 
     return redirect("main")
